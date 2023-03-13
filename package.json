@@ -1,0 +1,30 @@
+{
+  "name": "Daisy!",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^2.0.0",
+    "@next/mdx": "^12.0.10",
+    "@prisma/client": "^4.11.0",
+    "@supabase/supabase-js": "^2.10.0",
+    "emoji-regex": "^10.2.1",
+    "fs": "^0.0.1-security",
+    "next": "^13.2.4",
+    "prisma": "^4.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
+    "autoprefixer": "^10.4.2",
+    "eslint": "8.9.0",
+    "eslint-config-next": "^13.2.4",
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.22"
+  }
+}

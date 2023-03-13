@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bouquet2023 {
+  date        String?
+  description String?
+  url         String?
+  username    String?
+  id          Int     @id @default(autoincrement())
+  emoji       String?
+}
+
+model bouquet {
+  id       String                 @id
+  date     String?
+  name     String?
+  detail   String?
+  url      String?
+  username String?
+  emoji    bouquet_emoji_lookup[]
+}
+
+model bouquet_emoji_lookup {
+  id        BigInt   @id @default(autoincrement())
+  name      String?  @db.VarChar
+  emoji     String?  @db.VarChar
+  bouquetId String?
+  bouquet   bouquet? @relation(fields: [bouquetId], references: [id])
+}
