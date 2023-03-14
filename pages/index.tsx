@@ -37,22 +37,19 @@ export default function Home(): React.ReactNode {
 
     // Move the emoji to the start of the string if it contains an emoji
     let newValue = value;
+    let newEmoji = "⚪️";
     if (hasEmoji) {
       const emojiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g;
       const emojis = value.match(emojiRegex)?.join("") || "";
       newValue = value.replace(emojiRegex, "").trim();
-      if (newValue) {
-        newValue = `${emojis} ${newValue}`;
-      } else {
-        newValue = emojis;
-      }
+      newEmoji = emojis;
     }
 
     setTextField({
       description: newValue,
       date: new Date().toISOString().slice(0, 10),
       username: "Jon",
-      emoji: "⚪️",
+      emoji: newEmoji,
     });
 
     // Hide the error message if the input value doesn't contain more than one emoji
