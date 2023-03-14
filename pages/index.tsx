@@ -16,6 +16,7 @@ interface Bouquet {
   date: string;
   username: string;
   id: number;
+  emoji: string;
 }
 
 export default function Home(): React.ReactNode {
@@ -143,10 +144,13 @@ export default function Home(): React.ReactNode {
                 className={styles.bouquetDescription}
                 style={{ color: "gray" }}
               >
+                {textField.emoji !== "⚪️" ? textField.emoji : "⚪️"}{" "}
                 {textField.description}
               </div>
             </div>
           )}
+          Now, when the gray text is displayed during loading, it will show the
+          entered emoji if there is one, otherwise it will show the ⚪️ emoji.
         </>
 
         {bouquets.map((bouquet) => (
