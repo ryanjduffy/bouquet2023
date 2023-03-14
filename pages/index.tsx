@@ -149,8 +149,6 @@ export default function Home(): React.ReactNode {
               </div>
             </div>
           )}
-          Now, when the gray text is displayed during loading, it will show the
-          entered emoji if there is one, otherwise it will show the ⚪️ emoji.
         </>
 
         {bouquets.map((bouquet) => (
