@@ -2,11 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/bouquet.module.css";
 import React, { useState } from "react";
+import Recent from "./recent";
 
 interface TextField {
   description: string;
   date: string;
   username: string;
+  emoji: string;
 }
 
 interface Bouquet {
@@ -21,6 +23,7 @@ export default function Home(): React.ReactNode {
     description: "",
     date: new Date().toISOString().slice(0, 10),
     username: "Jon",
+    emoji: "⚪️",
   });
 
   const [bouquets, setBouquets] = useState<Bouquet[]>([]);
@@ -48,6 +51,7 @@ export default function Home(): React.ReactNode {
       description: newValue,
       date: new Date().toISOString().slice(0, 10),
       username: "Jon",
+      emoji: "⚪️",
     });
 
     // Hide the error message if the input value doesn't contain more than one emoji
@@ -66,7 +70,7 @@ export default function Home(): React.ReactNode {
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      const { description, date, username } = textField;
+      const { description, date, username, emoji } = textField;
 
       // Check if the input value contains more than one emoji
       const hasMultipleEmojis =
@@ -80,7 +84,7 @@ export default function Home(): React.ReactNode {
 
       const res = await fetch("/api/createBouquet", {
         method: "POST",
-        body: JSON.stringify({ description, date, username }),
+        body: JSON.stringify({ description, date, username, emoji }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -89,12 +93,13 @@ export default function Home(): React.ReactNode {
       setLoading(false); // set loading to false when the response is received
 
       const newBouquet = await res.json();
-      setBouquets([...bouquets, newBouquet]);
+      setBouquets([newBouquet, ...bouquets]); // use unshift instead of push
 
       setTextField({
         description: "",
         date: new Date().toISOString().slice(0, 10),
         username: "Jon",
+        emoji: "⚪️",
       });
     }
   };
@@ -130,23 +135,40 @@ export default function Home(): React.ReactNode {
             <div style={{ color: "red" }}>Please enter only one emoji</div>
           )}
         </div>
+
         {bouquets.map((bouquet) => (
           <div key={bouquet.id} className={styles.bouquet}>
             <div className={styles.bouquetDescription}>
-              {bouquet.description}
+              {bouquet.emoji} {bouquet.description}
             </div>
           </div>
         ))}
-        <>
+
+        {/* Render the gray loading indicator if loading and there are bouquets */}
+        {loading && bouquets.length > 0 && (
           <div className={styles.bouquet}>
-            <div className={styles.bouquetDescription}>
-              {loading && (
-                <div style={{ color: "gray" }}>{textField.description}</div>
-              )}
-              {!loading && !bouquets.length && <div></div>}
+            <div
+              className={styles.bouquetDescription}
+              style={{ color: "gray" }}
+            >
+              {textField.description}
             </div>
           </div>
-        </>
+        )}
+
+        {/* Render the gray loading indicator if no bouquets */}
+        {!loading && !bouquets.length && (
+          <div className={styles.bouquet}>
+            <div
+              className={styles.bouquetDescription}
+              style={{ color: "gray", marginTop: "10px;" }}
+            ></div>
+          </div>
+        )}
+
+        <div className={styles.bouquet}>
+          <Recent />
+        </div>
       </div>
     </>
   );
