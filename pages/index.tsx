@@ -136,6 +136,19 @@ export default function Home(): React.ReactNode {
           )}
         </div>
 
+        <>
+          {loading && (
+            <div className={styles.bouquet}>
+              <div
+                className={styles.bouquetDescription}
+                style={{ color: "gray" }}
+              >
+                {textField.description}
+              </div>
+            </div>
+          )}
+        </>
+
         {bouquets.map((bouquet) => (
           <div key={bouquet.id} className={styles.bouquet}>
             <div className={styles.bouquetDescription}>
@@ -143,17 +156,6 @@ export default function Home(): React.ReactNode {
             </div>
           </div>
         ))}
-
-        <>
-          <div className={styles.bouquet}>
-            <div className={styles.bouquetDescription}>
-              {loading && (
-                <div style={{ color: "gray" }}>{textField.description}</div>
-              )}
-              {!loading && !bouquets.length && <div></div>}
-            </div>
-          </div>
-        </>
 
         <div className={styles.bouquet}>
           <Recent />
