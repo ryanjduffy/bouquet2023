@@ -144,27 +144,16 @@ export default function Home(): React.ReactNode {
           </div>
         ))}
 
-        {/* Render the gray loading indicator if loading and there are bouquets */}
-        {loading && bouquets.length > 0 && (
+        <>
           <div className={styles.bouquet}>
-            <div
-              className={styles.bouquetDescription}
-              style={{ color: "gray" }}
-            >
-              {textField.description}
+            <div className={styles.bouquetDescription}>
+              {loading && (
+                <div style={{ color: "gray" }}>{textField.description}</div>
+              )}
+              {!loading && !bouquets.length && <div></div>}
             </div>
           </div>
-        )}
-
-        {/* Render the gray loading indicator if no bouquets */}
-        {!loading && !bouquets.length && (
-          <div className={styles.bouquet}>
-            <div
-              className={styles.bouquetDescription}
-              style={{ color: "gray", marginTop: "10px;" }}
-            ></div>
-          </div>
-        )}
+        </>
 
         <div className={styles.bouquet}>
           <Recent />
