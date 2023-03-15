@@ -142,7 +142,7 @@ export default function Home(): React.ReactNode {
                 style={{ color: "gray" }}
               >
                 {textField.emoji !== "⚪️" ? textField.emoji : "⚪️"}{" "}
-                {textField.description}
+                {textField.description.replace(textField.emoji, "").trim()}
               </div>
             </div>
           )}
