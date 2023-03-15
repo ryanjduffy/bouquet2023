@@ -1,3 +1,4 @@
+// pages/api/getBouquets.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, bouquet2023 } from "@prisma/client";
 import emojiRegex from "emoji-regex";
@@ -12,10 +13,14 @@ export default async function handler(
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { limit } = req.query;
+  const { limit, user } = req.query;
+
+  // Filter by the user query parameter
   const bouquets = await prisma.bouquet2023.findMany({
+    where: user ? { username: user.toString() } : {},
     orderBy: { id: "desc" },
     take: Number(limit) || 25,
   });
+
   res.status(200).json(bouquets);
 }
