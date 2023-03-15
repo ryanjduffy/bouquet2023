@@ -35,28 +35,25 @@ export default function Home(): React.ReactNode {
     // Check if the input value contains an emoji
     const hasEmoji = /\p{Emoji}/u.test(value);
 
-    // Move the emoji to the start of the string if it contains an emoji
-    let newValue = value;
-    let newEmoji = "⚪️";
+    // Find the first emoji in the string if it contains an emoji
+    let newEmoji = textField.emoji;
     if (hasEmoji) {
       const emojiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g;
-      const emojis = value.match(emojiRegex)?.join("") || "";
-      newValue = value.replace(emojiRegex, "").trim();
-      newEmoji = emojis;
+      const emojis = value.match(emojiRegex);
+      if (emojis) {
+        newEmoji = emojis[0];
+      }
     }
 
     setTextField({
-      description: newValue,
+      description: value,
       date: new Date().toISOString().slice(0, 10),
       username: "Jon",
       emoji: newEmoji,
     });
 
     // Hide the error message if the input value doesn't contain more than one emoji
-    if (
-      showError &&
-      !newValue.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g)?.length
-    ) {
+    if (showError && !value.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g)?.length) {
       setShowError(false);
     }
   };
