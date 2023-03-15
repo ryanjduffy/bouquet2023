@@ -18,9 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchBouquets() {
-      const res = await fetch(
-        `/api/getBouquets?limit=25${user ? `&user=${user}` : ""}`
-      );
+      const res = await fetch(`/api/getBouquets?limit=25&user=${user}`);
       const data = await res.json();
       setBouquets(data);
     }
@@ -33,7 +31,7 @@ export default function Home() {
         {bouquets.map((bouquet) => (
           <li key={bouquet.id}>
             <div className={styles.bouquetDescription}>
-              {bouquet.emoji} {bouquet.description} {bouquet.username}
+              {bouquet.emoji} {bouquet.description}
             </div>
           </li>
         ))}
