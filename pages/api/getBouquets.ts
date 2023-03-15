@@ -14,7 +14,7 @@ export default async function handler(
 
   const { limit } = req.query;
   const bouquets = await prisma.bouquet2023.findMany({
-    orderBy: { date: "desc" },
+    orderBy: { id: "desc" },
     take: Number(limit) || 25,
   });
   res.status(200).json(bouquets);
