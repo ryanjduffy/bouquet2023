@@ -9,7 +9,7 @@ export default async function handler(
   try {
     const { user } = req.query;
     const now = new Date();
-    const startDate = new Date("2023-03-09");
+    const startDate = new Date("2023-03-15");
     const totalWeeks = Math.ceil(
       (now.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)
     );
@@ -27,12 +27,6 @@ export default async function handler(
       weekStartDate.setDate(weekStartDate.getDate() + 7 * week);
       const weekEndDate = new Date(weekStartDate);
       weekEndDate.setDate(weekStartDate.getDate() + 7);
-
-      const apiUrl = `${
-        process.env.API_BASE_URL
-      }/api/getWeeklyDigest?user=${user}&startDate=${weekStartDate.toISOString()}&endDate=${weekEndDate.toISOString()}`;
-
-      console.log("Requesting weekly digest:", apiUrl);
 
       try {
         const response = await fetch(
