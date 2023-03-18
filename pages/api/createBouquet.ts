@@ -9,7 +9,8 @@ export default async function handler(
   res: NextApiResponse
 ): Promise<void> {
   if (req.method === "POST") {
-    const { description, date, username } = req.body;
+    const { description, username } = req.body;
+    const date = new Date(req.body.date);
     console.log("Received request:", { description, date, username });
     // Check if the description contains an emoji
     const hasEmoji = emojiRegex().test(description);

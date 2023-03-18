@@ -8,14 +8,14 @@ import { useRouter } from "next/router";
 
 interface TextField {
   description: string;
-  date: string;
+  date: Date;
   username: string;
   emoji: string;
 }
 
 interface Bouquet {
   description: string;
-  date: string;
+  date: Date;
   username: string;
   id: number;
   emoji: string;
@@ -26,7 +26,7 @@ export default function Home(): React.ReactNode {
   const { user } = router.query;
   const [textField, setTextField] = useState<TextField>({
     description: "",
-    date: new Date().toISOString().slice(0, 10),
+    date: new Date(),
     username: user ? user.toString() : "guest",
     emoji: "⚪️",
   });
@@ -69,7 +69,8 @@ export default function Home(): React.ReactNode {
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      const { description, date, username, emoji } = textField;
+      const { description, username, emoji } = textField;
+      const date = new Date(textField.date);
 
       // Check if the input value contains more than one emoji
       const hasMultipleEmojis =
