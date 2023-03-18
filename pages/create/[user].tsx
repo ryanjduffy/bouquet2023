@@ -51,7 +51,7 @@ export default function Home(): React.ReactNode {
 
     setTextField({
       description: value,
-      date: new Date().toISOString().slice(0, 10),
+      date: new Date(),
       username: user ? user.toString() : "guest",
       emoji: newEmoji,
     });
@@ -97,7 +97,7 @@ export default function Home(): React.ReactNode {
 
       setTextField({
         description: "",
-        date: new Date().toISOString().slice(0, 10),
+        date: new Date(),
         username: user ? user.toString() : "guest",
         emoji: "⚪️",
       });
