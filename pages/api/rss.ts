@@ -9,13 +9,13 @@ export default async function handler(
   try {
     const { user } = req.query;
     const now = new Date();
-    const startDate = new Date("2023-03-15");
+    const startDate = new Date("2023-03-04");
     const totalWeeks = Math.ceil(
       (now.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)
     );
 
     const feed = new RSS({
-      title: `${user}'s Weekly Digest`,
+      title: `${user}'s weekly bouquet`,
       description: "A weekly digest of bouquets",
       feed_url: `${process.env.API_BASE_URL}/api/weeklyDigestRss?user=${user}`,
       site_url: `${process.env.SITE_URL}/user/${user}`,
@@ -46,16 +46,11 @@ export default async function handler(
         }
 
         const digestContent = bouquets
-          .map(
-            (bouquet) =>
-              `${bouquet.emoji} ${bouquet.description} - ${new Date(
-                bouquet.date
-              ).toLocaleDateString()}`
-          )
-          .join("\n");
+          .map((bouquet) => `${bouquet.emoji} ${bouquet.description}`)
+          .join("<br />\n");
 
         feed.item({
-          title: `Weekly Digest - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
+          title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
           description: digestContent,
           url: `${process.env.SITE_URL}/user/${user}`,
           author: user,

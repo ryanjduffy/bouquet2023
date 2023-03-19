@@ -18,7 +18,9 @@ export default function Home({ emojis }: HomeProps): JSX.Element {
         <title>bouquet</title>
         <meta name="description" content="All emojis from the database" />
       </Head>
-      <div className="bg-black text-white p-3">Coming soon</div>
+      <div className="bg-black text-white p-3 text-center">
+        RSS only for now
+      </div>
     </>
   );
 }
