@@ -12,11 +12,12 @@ export default async function handler(
   const startDate =
     typeof req.query.startDate === "string"
       ? req.query.startDate
-      : req.query.startDate[0];
+      : req.query.startDate?.[0] || "2023-03-13"; // Provide a default value here if needed
+
   const endDate =
     typeof req.query.endDate === "string"
       ? req.query.endDate
-      : req.query.endDate[0];
+      : req.query.endDate?.[0] || "2023-03-19"; // Provide a default value here if needed
 
   try {
     console.log("Query parameters:", {

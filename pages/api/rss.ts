@@ -26,7 +26,7 @@ export default async function handler(
       const weekStartDate = new Date(startDate);
       weekStartDate.setDate(weekStartDate.getDate() + 7 * week);
       const weekEndDate = new Date(weekStartDate);
-      weekEndDate.setDate(weekStartDate.getDate() + 7);
+      weekEndDate.setDate(weekStartDate.getDate() + 6);
 
       try {
         const response = await fetch(
