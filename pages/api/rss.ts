@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import RSS from "rss";
 import fetch from "node-fetch";
+import { encode } from "entities";
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,8 +47,8 @@ export default async function handler(
         }
 
         const digestContent = bouquets
-          .map((bouquet) => `${bouquet.emoji} ${bouquet.description}`)
-          .join("<br />\n");
+          .map((bouquet) => `${bouquet.emoji} ${encode(bouquet.description)}`)
+          .join("&#10;");
 
         feed.item({
           title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
