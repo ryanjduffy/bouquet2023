@@ -29,41 +29,52 @@ export default async function handler(
       const weekEndDate = new Date(weekStartDate);
       weekEndDate.setDate(weekStartDate.getDate() + 6);
 
-      try {
-        const response = await fetch(
-          `${
-            process.env.API_BASE_URL
-          }/api/getWeeklyDigest?user=${user}&startDate=${weekStartDate.toISOString()}&endDate=${weekEndDate.toISOString()}`
-        );
+      // Get the current date without time
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
 
-        if (!response.ok) {
-          throw new Error(`API request failed with status ${response.status}`);
+      if (weekEndDate < currentDate) {
+        try {
+          const response = await fetch(
+            `${
+              process.env.API_BASE_URL
+            }/api/getWeeklyDigest?user=${user}&startDate=${weekStartDate.toISOString()}&endDate=${weekEndDate.toISOString()}`
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `API request failed with status ${response.status}`
+            );
+          }
+
+          const bouquets = await response.json();
+
+          if (bouquets.length === 0) {
+            continue;
+          }
+
+          const digestContent = bouquets
+            .map((bouquet) => `${bouquet.emoji} ${encode(bouquet.description)}`)
+            .join("&#10;");
+
+          const postDate = weekStartDate; // Use the weekStartDate as the post date
+
+          feed.item({
+            title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
+            description: digestContent,
+            url: `${process.env.SITE_URL}/user/${user}`,
+            guid: `${
+              process.env.SITE_URL
+            }/user/${user}/${postDate.toISOString()}`, // Add a unique guid based on the URL and the post date
+            author: user,
+            date: postDate, // Use the post date instead of the end date
+          });
+        } catch (error) {
+          console.error(
+            `Error fetching weekly digest for week ${week}:`,
+            error
+          );
         }
-
-        const bouquets = await response.json();
-
-        if (bouquets.length === 0) {
-          continue;
-        }
-
-        const digestContent = bouquets
-          .map((bouquet) => `${bouquet.emoji} ${encode(bouquet.description)}`)
-          .join("&#10;");
-
-        const postDate = weekStartDate; // Use the weekStartDate as the post date
-
-        feed.item({
-          title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
-          description: digestContent,
-          url: `${process.env.SITE_URL}/user/${user}`,
-          guid: `${
-            process.env.SITE_URL
-          }/user/${user}/${postDate.toISOString()}`, // Add a unique guid based on the URL and the post date
-          author: user,
-          date: postDate, // Use the post date instead of the end date
-        });
-      } catch (error) {
-        console.error(`Error fetching weekly digest for week ${week}:`, error);
       }
     }
 
