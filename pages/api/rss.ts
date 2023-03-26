@@ -50,12 +50,17 @@ export default async function handler(
           .map((bouquet) => `${bouquet.emoji} ${encode(bouquet.description)}`)
           .join("&#10;");
 
+        const postDate = weekStartDate; // Use the weekStartDate as the post date
+
         feed.item({
           title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
           description: digestContent,
           url: `${process.env.SITE_URL}/user/${user}`,
+          guid: `${
+            process.env.SITE_URL
+          }/user/${user}/${postDate.toISOString()}`, // Add a unique guid based on the URL and the post date
           author: user,
-          date: weekEndDate,
+          date: postDate, // Use the post date instead of the end date
         });
       } catch (error) {
         console.error(`Error fetching weekly digest for week ${week}:`, error);
