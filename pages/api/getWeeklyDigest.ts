@@ -20,7 +20,10 @@ export default async function handler(
       : req.query.endDate?.[0] || "2023-03-19"; // Provide a default value here if needed
 
   // Set endDate to the earliest of the provided endDate and the current date
-  endDate = new Date(Math.min(new Date(endDate), new Date())).toISOString();
+  // Set endDate to the earliest of the provided endDate and the current date
+  endDate = new Date(
+    Math.min(new Date(endDate).getTime(), new Date().getTime())
+  ).toISOString();
 
   try {
     console.log("Query parameters:", {
