@@ -20,10 +20,14 @@ export default async function handler(
       : req.query.endDate?.[0] || "2023-03-19"; // Provide a default value here if needed
 
   // Set endDate to the earliest of the provided endDate and the current date
-  // Set endDate to the earliest of the provided endDate and the current date
   endDate = new Date(
     Math.min(new Date(endDate).getTime(), new Date().getTime())
   ).toISOString();
+
+  const nextSaturday = new Date(
+    new Date(startDate).getTime() +
+      (6 - new Date(startDate).getDay()) * 24 * 60 * 60 * 1000
+  );
 
   try {
     console.log("Query parameters:", {
@@ -38,6 +42,11 @@ export default async function handler(
         date: {
           gte: new Date(startDate).toISOString(),
           lt: endDate,
+        },
+        AND: {
+          date: {
+            lt: new Date(nextSaturday).toISOString(),
+          },
         },
       },
       orderBy: {
