@@ -36,6 +36,17 @@ export default function Home(): React.ReactNode {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
+    // If the input value is empty, set the textField value to an empty string
+    if (value === "") {
+      setTextField({
+        description: "",
+        date: new Date(),
+        username: user ? user.toString() : "guest",
+        emoji: "⚪️",
+      });
+      return;
+    }
+
     // Check if the input value contains an emoji
     const hasEmoji = /\p{Emoji}/u.test(value);
 
@@ -47,10 +58,24 @@ export default function Home(): React.ReactNode {
       if (emojis) {
         newEmoji = emojis[0];
       }
+    } else {
+      // If there's no emoji in the value, set the newEmoji to "⚪️"
+      newEmoji = "⚪️";
     }
 
+    // Remove emoji from the description, if present
+    const descriptionWithoutEmoji = value.replace(newEmoji, "");
+
+    // Add the emoji at the beginning of the description
+    const updatedDescription =
+      newEmoji !== "⚪️"
+        ? `${newEmoji}${
+            descriptionWithoutEmoji.startsWith(" ") ? "" : " "
+          }${descriptionWithoutEmoji}`
+        : descriptionWithoutEmoji;
+
     setTextField({
-      description: value,
+      description: updatedDescription,
       date: new Date(),
       username: user ? user.toString() : "guest",
       emoji: newEmoji,
