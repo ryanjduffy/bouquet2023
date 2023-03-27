@@ -12,6 +12,8 @@ interface Bouquet {
 
 export default function Home() {
   const [bouquets, setBouquets] = useState<Bouquet[]>([]);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingValue, setEditingValue] = useState<string>("");
 
   const router = useRouter();
   const { user } = router.query;
@@ -25,14 +27,50 @@ export default function Home() {
     fetchBouquets();
   }, [user]);
 
+  const onEdit = (bouquet: Bouquet) => {
+    setEditingId(bouquet.id);
+    setEditingValue(bouquet.description);
+  };
+
+  const onSave = async (id: number) => {
+    setEditingId(null);
+    setEditingValue("");
+
+    // Update the bouquet in the local state
+    const updatedBouquets = bouquets.map((bouquet) =>
+      bouquet.id === id ? { ...bouquet, description: editingValue } : bouquet
+    );
+    setBouquets(updatedBouquets);
+
+    // Make API call to update the bouquet on the server
+    await fetch(`/api/updateBouquet`, {
+      method: "PUT",
+      body: JSON.stringify({ id, description: editingValue }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return (
     <div>
       <ul>
         {bouquets.map((bouquet) => (
           <li key={bouquet.id}>
-            <div className={styles.bouquetDescription}>
-              {bouquet.emoji} {bouquet.description}
-            </div>
+            {editingId === bouquet.id ? (
+              <input
+                value={editingValue}
+                onChange={(e) => setEditingValue(e.target.value)}
+                onBlur={() => onSave(bouquet.id)}
+              />
+            ) : (
+              <div
+                className={styles.bouquetDescription}
+                onClick={() => onEdit(bouquet)}
+              >
+                {bouquet.emoji} {bouquet.description}
+              </div>
+            )}
           </li>
         ))}
       </ul>
