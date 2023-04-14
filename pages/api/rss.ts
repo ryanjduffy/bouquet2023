@@ -57,7 +57,7 @@ export default async function handler(
             .map((bouquet) => `${bouquet.emoji} ${encode(bouquet.description)}`)
             .join("&#10;");
 
-          const postDate = weekStartDate; // Use the weekStartDate as the post date
+          const postDate = weekEndDate; // Use the weekStartDate as the post date
 
           feed.item({
             title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
