@@ -62,7 +62,9 @@ export default async function handler(
           feed.item({
             title: `@${user}'s weekly bouquet - ${weekStartDate.toLocaleDateString()} - ${weekEndDate.toLocaleDateString()}`,
             description: digestContent,
-            url: `${process.env.SITE_URL}/user/${user}`,
+            url: `${
+              process.env.SITE_URL
+            }/user/${user}/${postDate.toISOString()}`,
             guid: `${
               process.env.SITE_URL
             }/user/${user}/${postDate.toISOString()}`, // Add a unique guid based on the URL and the post date
