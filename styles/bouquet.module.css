@@ -39,3 +39,25 @@
 .pendingBouquet {
   color: red;
 }
+
+/* bouquet.module.css */
+.pageContainer {
+  margin: 20px;
+}
+
+.bouquetContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.weekContainer {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .bouquetContainer {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}

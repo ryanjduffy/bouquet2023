@@ -10,7 +10,7 @@ interface Bouquet {
   emoji: string;
 }
 
-export default function Home() {
+export default function UserPage() {
   const [bouquets, setBouquets] = useState<Bouquet[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState<string>("");
@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchBouquets() {
-      const res = await fetch(`/api/getBouquets?limit=1&user=${user}`);
+      const res = await fetch(`/api/getBouquets?user=${user}`);
       const data = await res.json();
       setBouquets(data);
     }
@@ -52,32 +52,48 @@ export default function Home() {
     });
   };
 
+  // Group bouquets by week
+  const groupedBouquets = bouquets.reduce((acc, bouquet) => {
+    const bouquetDate = new Date(bouquet.date);
+    const weekStart = new Date(
+      bouquetDate.getFullYear(),
+      bouquetDate.getMonth(),
+      bouquetDate.getDate() - bouquetDate.getDay()
+    ); // Get the start of the week for the bouquet date
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6); // Get the end of the week for the bouquet date
+
+    const weekRange = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
+
+    if (!acc[weekRange]) {
+      acc[weekRange] = [];
+    }
+
+    acc[weekRange].push(bouquet);
+    return acc;
+  }, {});
+
   return (
-    <div>
-      <h2>
-        This is a temporary hack right now, and not showing the right data. Stay
-        tuned.
-      </h2>
-      <ul>
-        {bouquets.map((bouquet) => (
-          <li key={bouquet.id}>
-            {editingId === bouquet.id ? (
-              <input
-                value={editingValue}
-                onChange={(e) => setEditingValue(e.target.value)}
-                onBlur={() => onSave(bouquet.id)}
-              />
-            ) : (
-              <div
-                className={styles.bouquetDescription}
-                onClick={() => onEdit(bouquet)}
-              >
-                {bouquet.emoji} {bouquet.description}
-              </div>
-            )}
-          </li>
+    <div className={styles.pageContainer}>
+      <h1>{user}</h1>
+      <div className={styles.bouquetContainer}>
+        {Object.keys(groupedBouquets).map((weekRange) => (
+          <div key={weekRange} className={styles.weekContainer}>
+            <h2>{weekRange}</h2>
+            <div className={styles.emojiContainer}>
+              {groupedBouquets[weekRange].map((bouquet) => (
+                <div
+                  key={bouquet.id}
+                  className={`inline-block ${styles.emoji}`}
+                  onClick={() => onEdit(bouquet)}
+                >
+                  {bouquet.emoji}
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
