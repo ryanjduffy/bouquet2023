@@ -10,22 +10,29 @@ interface Bouquet {
   emoji: string;
 }
 
-export default function UserPage() {
+function UserPage() {
   const [bouquets, setBouquets] = useState<Bouquet[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState<string>("");
 
   const router = useRouter();
-  const { user } = router.query;
+  const user = router.query.user;
+  let { startDate, endDate } = router.query;
+
+  // Assign default values
+  startDate = startDate || "2023-03-13";
+  endDate = endDate || "2023-03-19";
 
   useEffect(() => {
     async function fetchBouquets() {
-      const res = await fetch(`/api/getBouquets?user=${user}`);
+      const res = await fetch(
+        `/api/getBouquets?user=${user}&startDate=${startDate}&endDate=${endDate}`
+      );
       const data = await res.json();
       setBouquets(data);
     }
     fetchBouquets();
-  }, [user]);
+  }, [user, startDate, endDate]);
 
   const onEdit = (bouquet: Bouquet) => {
     setEditingId(bouquet.id);
@@ -52,7 +59,6 @@ export default function UserPage() {
     });
   };
 
-  // Group bouquets by week
   // Group bouquets by week
   const groupedBouquets = bouquets.reduce((acc, bouquet) => {
     const bouquetDate = new Date(bouquet.date);
@@ -118,3 +124,5 @@ export default function UserPage() {
     </div>
   );
 }
+
+export default UserPage;
