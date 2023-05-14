@@ -53,6 +53,7 @@ export default function UserPage() {
   };
 
   // Group bouquets by week
+  // Group bouquets by week
   const groupedBouquets = bouquets.reduce((acc, bouquet) => {
     const bouquetDate = new Date(bouquet.date);
     const weekStart = new Date(
@@ -63,7 +64,7 @@ export default function UserPage() {
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6); // Get the end of the week for the bouquet date
 
-    const options = { month: "long", day: "numeric" };
+    const options = { month: "long" as const, day: "numeric" as const };
 
     const formatter = new Intl.DateTimeFormat("en-US", options);
 
@@ -75,8 +76,8 @@ export default function UserPage() {
     const weekEndDay = weekEndFormatted.split(" ")[1]; // Extract the day from the formatted end date
 
     const weekRange = isSameMonth
-      ? `${weekStartFormatted}-${weekEndDay}`
-      : `${weekStartFormatted}-${weekEndFormatted}`;
+      ? `${weekStartFormatted} - ${weekEndDay}`
+      : `${weekStartFormatted} - ${weekEndFormatted}`;
 
     if (!acc[weekRange]) {
       acc[weekRange] = [];
