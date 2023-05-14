@@ -1,39 +1,44 @@
 .container {
-  width: 70%;
+  width: 100%; /* Make the container full width on mobile */
   margin: 0 auto;
+  padding: 0 5px; /* Add some padding to prevent content touching the screen edge */
 }
 
 .bouquetList {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px; /* Reduced margin-top */
 }
+
 .bouquet {
   display: flex;
-  gap: 20px;
-  padding: 0 10px;
-  margin: 0 20px;
+  gap: 10px; /* Reduced gap */
+  padding: 0 5px; /* Reduced padding */
+  margin: 0 10px; /* Reduced margin */
   border-radius: 10px;
 }
+
 .bouquetDescription {
   flex: 1;
-  font-size: 18px;
+  font-size: 16px; /* Reduced font-size */
 }
+
 .textFieldWrapper {
   display: flex;
   justify-content: center;
-  margin: 40px 0;
+  margin: 20px 10px; /* Reduced vertical margin */
 }
+
 .textField {
   width: 100%;
-  height: 80px;
-  padding: 20px;
-  font-size: 24px;
+  height: 36px; /* Reduced height */
+  padding: 10px; /* Reduced padding */
+  font-size: 20px; /* Reduced font-size */
   text-align: left;
-  border-radius: 20px;
+  border-radius: 8px;
   border: none;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #efefef;
 }
 
 .pendingBouquet {
@@ -42,21 +47,63 @@
 
 /* bouquet.module.css */
 .pageContainer {
-  margin: 20px;
+  margin: 10px; /* Reduced margin */
 }
 
 .bouquetContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* Reduce minimum column width */
+  gap: 10px; /* Reduced gap */
 }
 
 .weekContainer {
   padding: 3px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) {
+  /* Apply desktop styles when viewport is larger than 768px */
+  .container {
+    width: 70%; /* Back to desktop width */
+    padding: 0; /* Remove the padding */
+  }
+
+  .bouquetList {
+    margin-top: 20px; /* Back to desktop margin-top */
+  }
+
+  .bouquet {
+    gap: 20px; /* Back to desktop gap */
+    padding: 0 10px; /* Back to desktop padding */
+    margin: 0 20px; /* Back to desktop margin */
+  }
+
+  .bouquetDescription {
+    font-size: 18px; /* Back to desktop font-size */
+  }
+
+  .textFieldWrapper {
+    margin: 40px 0; /* Back to desktop vertical margin */
+  }
+
+  .textField {
+    height: 80px; /* Back to desktop height */
+    padding: 20px; /* Back to desktop padding */
+    font-size: 24px; /* Back to desktop font-size */
+  }
+
+  /* bouquet.module.css */
+  .pageContainer {
+    margin: 20px; /* Back to desktop margin */
+  }
+
   .bouquetContainer {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(200px, 1fr)
+    ); /* Back to desktop minimum column width */
+    gap: 20px; /* Back to desktop gap */
   }
 }

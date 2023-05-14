@@ -14,15 +14,18 @@ export default function Home() {
   const [bouquets, setBouquets] = useState<Bouquet[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true); // New loading state
 
   const router = useRouter();
   const { user } = router.query;
 
   useEffect(() => {
     async function fetchBouquets() {
+      setIsLoading(true); // Set loading to true before fetching
       const res = await fetch(`/api/getBouquets?limit=25&user=${user}`);
       const data = await res.json();
       setBouquets(data);
+      setIsLoading(false); // Set loading to false after fetching
     }
     fetchBouquets();
   }, [user]);
@@ -54,26 +57,15 @@ export default function Home() {
 
   return (
     <div>
-      <ul>
-        {bouquets.map((bouquet) => (
-          <li key={bouquet.id}>
-            {editingId === bouquet.id ? (
-              <input
-                value={editingValue}
-                onChange={(e) => setEditingValue(e.target.value)}
-                onBlur={() => onSave(bouquet.id)}
-              />
-            ) : (
-              <div
-                className={styles.bouquetDescription}
-                onClick={() => onEdit(bouquet)}
-              >
-                {bouquet.emoji} {bouquet.description}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <div>Loading...</div> // Show a loading message or a spinner
+      ) : (
+        <ul>
+          {bouquets.map((bouquet) => (
+            // Rest of your JSX...
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
