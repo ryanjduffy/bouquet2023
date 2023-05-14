@@ -62,7 +62,22 @@ export default function Home() {
       ) : (
         <ul>
           {bouquets.map((bouquet) => (
-            // Rest of your JSX...
+            <li key={bouquet.id}>
+              {editingId === bouquet.id ? (
+                <input
+                  value={editingValue}
+                  onChange={(e) => setEditingValue(e.target.value)}
+                  onBlur={() => onSave(bouquet.id)}
+                />
+              ) : (
+                <div
+                  className={styles.bouquetDescription}
+                  onClick={() => onEdit(bouquet)}
+                >
+                  {bouquet.emoji} {bouquet.description}
+                </div>
+              )}
+            </li>
           ))}
         </ul>
       )}
