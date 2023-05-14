@@ -63,7 +63,20 @@ export default function UserPage() {
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6); // Get the end of the week for the bouquet date
 
-    const weekRange = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
+    const options = { month: "long", day: "numeric" };
+
+    const formatter = new Intl.DateTimeFormat("en-US", options);
+
+    const weekStartFormatted = formatter.format(weekStart);
+    const weekEndFormatted = formatter.format(weekEnd);
+
+    // If the start and end dates are in the same month, don't repeat the month
+    const isSameMonth = weekStart.getMonth() === weekEnd.getMonth();
+    const weekEndDay = weekEndFormatted.split(" ")[1]; // Extract the day from the formatted end date
+
+    const weekRange = isSameMonth
+      ? `${weekStartFormatted}-${weekEndDay}`
+      : `${weekStartFormatted}-${weekEndFormatted}`;
 
     if (!acc[weekRange]) {
       acc[weekRange] = [];
@@ -73,13 +86,20 @@ export default function UserPage() {
     return acc;
   }, {});
 
+  const addEmojiVariant = (emoji) => {
+    if (emoji.slice(-1) !== "\uFE0F") {
+      return emoji + "\uFE0F";
+    }
+    return emoji;
+  };
+
   return (
     <div className={styles.pageContainer}>
-      <h1>{user}</h1>
+      <h1 className="mb-4 text-xl font-bold text-gray-400">{user}</h1>
       <div className={styles.bouquetContainer}>
         {Object.keys(groupedBouquets).map((weekRange) => (
           <div key={weekRange} className={styles.weekContainer}>
-            <h2>{weekRange}</h2>
+            <h2 className="font-medium text-gray-400">{weekRange}</h2>
             <div className={styles.emojiContainer}>
               {groupedBouquets[weekRange].map((bouquet) => (
                 <div
@@ -87,7 +107,7 @@ export default function UserPage() {
                   className={`inline-block ${styles.emoji}`}
                   onClick={() => onEdit(bouquet)}
                 >
-                  {bouquet.emoji}
+                  {addEmojiVariant(bouquet.emoji)}
                 </div>
               ))}
             </div>

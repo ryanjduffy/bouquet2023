@@ -52,8 +52,7 @@
 }
 
 .weekContainer {
-  border: 1px solid #ddd;
-  padding: 10px;
+  padding: 3px;
 }
 
 @media (max-width: 768px) {
