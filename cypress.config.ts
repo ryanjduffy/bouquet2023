@@ -1,11 +1,14 @@
-const { defineConfig } = require('cypress');
-const replay = require("@replayio/cypress")
+import { defineConfig } from 'cypress';
+import * as replay from '@replayio/cypress';
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       replay.default(on, config);
       return config;
     },
-  },
+  }
 });
+
+
+
