@@ -12,7 +12,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5.1.0
         with:
-          browser: replay-chromium
+          browser: replay-firefox
           build: npm run build
           start: npm start
 
@@ -21,4 +21,4 @@ jobs:
         if: always()
         uses: replayio/action-upload@v0.5.0
         with:
-          api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
+          api-key: rwk_gDtAB8kjJ722fCNiCFZ8hEbsri41eiadNGQ0MxDIcuM
