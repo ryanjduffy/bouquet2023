@@ -1,7 +1,7 @@
 name: End-to-end tests
 on: [push, pull_request]
 env:
-  RECORD_REPLAY_CHROMIUM_DOWNLOAD_FILE: linux-chromium-20230621-cb8bb8eefa00-5e3d79d9768c-buildkite.tar.xz
+  RECORD_REPLAY_CHROMIUM_DOWNLOAD_FILE: linux-chromium-20230621-992a66d7f85d-5e3d79d9768c-buildkite.tar.xz
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
